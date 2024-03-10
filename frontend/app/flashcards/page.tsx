@@ -4,45 +4,57 @@ import Image from "next/image";
 import { Flex, Layout, Button } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import ReactCardFlip from "react-card-flip";
+import Loading from "../components/Loading";
 
 const Flashcard = () => {
   const [flip, setFlip] = useState(false);
   const [currCard, setCurrCard] = useState(1);
   const [cards, setCards] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   let cardCount = 10;
 
   useEffect(() => {
-    getCards();
-  });
+    const getCards = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/getQuiz");
+        if (response.ok) {
+          // Handle success
+          const data = await response.json();
+          setIsLoading(false);
+          const cards = data.flashcards;
+          setCards(parseCards(cards));
+        } else {
+          // Handle error
+          const errorData = await response.json();
+          console.error("Error:", errorData);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
 
-  const getCards = async () => {
+    getCards(); // Call getCards() only once after the component mounts
+  }, []);
+
+  interface Flashcard {
+    front: string;
+    back: string;
+  }
+  
+  const parseCards = (str: string): { [key: string]: string } => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/getQuiz");
-      if (response.ok) {
-        // Handle success
-        const data = await response.json();
-        const cards = data.flashcards;
-        setCards(parseCards(cards));
-      } else {
-        // Handle error
-        const errorData = await response.json();
-        console.error("Error:", errorData);
-      }
+        const jsonArray: Flashcard[] = JSON.parse(str);
+        const dict: { [key: string]: string } = {};
+
+        jsonArray.forEach((card: Flashcard) => {
+            dict[card.front] = card.back;
+        });
+       
+        return dict;
     } catch (error) {
-      console.error("Error:", error);
+        console.error("Error parsing string:", error);
+        return {}; // Return an empty object if parsing fails
     }
-  };
-
-  const parseCards = (cards: { front: string; back: any }[]) => {
-    const dict: { [key: string]: any } = {};
-
-    cards.forEach((card: any) => {
-      if (!(card.front in dict)) {
-        dict[card.front] = card.back;
-      }
-    });
-    console.log(dict);
-    return dict;
   };
 
   const layoutStyle = {
@@ -98,43 +110,47 @@ const Flashcard = () => {
         />
         <Layout style={layoutStyle}>
           <Flex vertical align="center" justify="center">
+          {isLoading ? (
+              <Loading />
+            ) : (
+            <>
             <ReactCardFlip isFlipped={flip} flipDirection="vertical">
-              <div
-                style={boxStyle}
-                className="flex flex-col shadow-md bg-white align-middle text-center z-20"
-              >
-                Welcome to GFG.
-              </div>
-              <div
-                style={boxStyle}
-                className="flex flex-col shadow-md bg-white align-middle text-center z-20"
-              >
-                Computer Science Portal.
-              </div>
-            </ReactCardFlip>
-            <Flex gap="small" style={{ marginBottom: "10px" }}>
-              <Button
-                type="primary"
-                shape="circle"
-                icon={<ArrowLeftOutlined />}
-                onClick={handlePrevCard}
-                style={{ backgroundColor: "#06D6A0", color: "black" }}
-              />
-              <Button
-                type="primary"
-                shape="circle"
-                icon={<ArrowRightOutlined />}
-                onClick={handleNextCard}
-                style={{ backgroundColor: "#06D6A0", color: "black" }}
-              />
-            </Flex>
-            <Button
-              type="primary"
-              onClick={handleFlip}
-              style={{ backgroundColor: "#F8B7C5", color: "black" }}
-            >
-              FLIP
-            </Button>
+                    <div
+                      style={boxStyle}
+                      className="flex flex-col shadow-md bg-white align-middle text-center z-20"
+                    >
+                      Welcome to GFG.
+                    </div>
+                    <div
+                      style={boxStyle}
+                      className="flex flex-col shadow-md bg-white align-middle text-center z-20"
+                    >
+                      Computer Science Portal.
+                    </div>
+                  </ReactCardFlip>
+                  <Flex gap="small" style={{ marginBottom: "10px" }}>
+                      <Button
+                        type="primary"
+                        shape="circle"
+                        icon={<ArrowLeftOutlined />}
+                        onClick={handlePrevCard}
+                        style={{ backgroundColor: "#06D6A0", color: "black" }} />
+                      <Button
+                        type="primary"
+                        shape="circle"
+                        icon={<ArrowRightOutlined />}
+                        onClick={handleNextCard}
+                        style={{ backgroundColor: "#06D6A0", color: "black" }} />
+                    </Flex>
+                    <Button
+                      type="primary"
+                      onClick={handleFlip}
+                      style={{ backgroundColor: "#F8B7C5", color: "black" }}
+                    >
+                      FLIP
+                    </Button>
+                    </>
+          )}
           </Flex>
         </Layout>
       </Flex>

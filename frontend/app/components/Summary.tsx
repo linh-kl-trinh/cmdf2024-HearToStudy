@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, Card, Button, Input, Avatar } from "antd";
 import { useState, useEffect } from "react";
+import "./Summary.css";
 import { Typography } from "antd";
 const { Title } = Typography;
 
@@ -32,12 +33,11 @@ const Summary = () => {
   return (
     <Flex gap="large" vertical>
       <Title
-        align="center"
-        style={{ fontWeight: "bold", color: "#06D6A0", fontSize: "40px" }}
+        style={{ fontWeight: "bold", color: "#06D6A0", fontSize: "40px", textAlign: "center" }}
       >
         Summary
       </Title>
-      <Card bordered={false}>{formattedLines}</Card>
+      <Card bordered={false} className="custom">{formattedLines}</Card>
       <Button
         href="/counter"
         type="primary"

@@ -24,6 +24,7 @@ const Home = () => {
       if (response.ok) {
         // Handle success
         const data = await response.json();
+
         setIsLoading(false);
         console.log("Success:", data);
       } else {
@@ -62,8 +63,7 @@ const Home = () => {
         <Flex gap="large" vertical>
           {isSummary ? (
             isLoading ? (
-              // <Loading />
-              <Summary />
+              <Loading />
             ) : (
               <Summary />
             )

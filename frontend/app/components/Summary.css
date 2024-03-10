@@ -1,4 +1,11 @@
-:where(.css-dev-only-do-not-override-1uweeqc).ant-layout,
-:where(.css-dev-only-do-not-override-1uweeqc).ant-layout * {
+/* :where(.css-dev-only-do-not-override-1uweeqc).ant-layout {
   background-color: transparent !important;
 }
+
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tabs-top >.ant-tabs-nav {
+  margin: 0 !important;
+}
+
+.custom {
+  background-color: #ffffff !important;
+} */
