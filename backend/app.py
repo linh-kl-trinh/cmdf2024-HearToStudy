@@ -122,6 +122,13 @@ def generate_quiz(number_of_questions):
         print(f'Error: {str(e)}')
         return {'error': 'Failed to generate quiz'}, 500
 
+@app.route('/getSummary', methods=['GET'])
+def get_summary():
+    data = read_from_json('summary.json', 'content')
+    return jsonify({
+        'content': data
+    })
+
 # Run the Flask application
 if __name__ == '__main__':
     app.run(debug=True)
