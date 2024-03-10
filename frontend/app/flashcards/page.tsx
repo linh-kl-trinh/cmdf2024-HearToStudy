@@ -14,6 +14,22 @@ const Flashcard = () => {
   const [isLoading, setIsLoading] = useState(true);
   let cardCount = 10;
 
+  const [styleTagsPresent, setStyleTagsPresent] = useState(false);
+
+  useEffect(() => {
+    const pollStyleTags = setInterval(() => {
+      const styleTags = document.querySelectorAll("style");
+
+      if (styleTags.length > 0) {
+        setStyleTagsPresent(true);
+        clearInterval(pollStyleTags); // Stop polling once style tags are found
+      }
+    }, 1000); // Poll every 1000 milliseconds (1 second)
+
+    // Cleanup interval when component unmounts
+    return () => clearInterval(pollStyleTags);
+  }, []); // Empty dependency array ensures the effect runs once after the initial render
+
   useEffect(() => {
     const getCards = async () => {
       try {
@@ -117,57 +133,61 @@ const Flashcard = () => {
           }}
           alt="background"
         />
-        <Layout style={layoutStyle}>
-          <Flex vertical align="center" justify="center">
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <>
-                <ReactCardFlip isFlipped={flip} flipDirection="vertical">
-                  <div
-                    style={boxStyle}
-                    className="flex flex-col shadow-md bg-white align-middle text-center z-20 text-lg"
-                  >
-                    {frontCards[currCard]}
-                  </div>
-                  <div
-                    style={boxStyle}
-                    className="flex flex-col shadow-md bg-white align-middle text-center z-20 text-lg"
-                  >
-                    {backCards[currCard]}
-                  </div>
-                </ReactCardFlip>
-                <Flex gap="small" style={{ marginBottom: "10px" }}>
+        {styleTagsPresent ? (
+          <Layout style={layoutStyle}>
+            <Flex vertical align="center" justify="center">
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  <ReactCardFlip isFlipped={flip} flipDirection="vertical">
+                    <div
+                      style={boxStyle}
+                      className="flex flex-col shadow-md bg-white align-middle text-center z-20 text-lg"
+                    >
+                      {frontCards[currCard]}
+                    </div>
+                    <div
+                      style={boxStyle}
+                      className="flex flex-col shadow-md bg-white align-middle text-center z-20 text-lg"
+                    >
+                      {backCards[currCard]}
+                    </div>
+                  </ReactCardFlip>
+                  <Flex gap="small" style={{ marginBottom: "10px" }}>
+                    <Button
+                      shape="circle"
+                      icon={<ArrowLeftOutlined />}
+                      onClick={handlePrevCard}
+                      className="circle-button"
+                      style={{ color: "black" }}
+                    />
+                    <Button
+                      shape="circle"
+                      icon={<ArrowRightOutlined />}
+                      onClick={handleNextCard}
+                      className="circle-button"
+                      style={{
+                        color: "black",
+                      }}
+                    />
+                  </Flex>
                   <Button
-                    shape="circle"
-                    icon={<ArrowLeftOutlined />}
-                    onClick={handlePrevCard}
-                    className="circle-button"
-                    style={{ color: "black" }}
-                  />
-                  <Button
-                    shape="circle"
-                    icon={<ArrowRightOutlined />}
-                    onClick={handleNextCard}
-                    className="circle-button"
+                    onClick={handleFlip}
+                    className="flip"
                     style={{
                       color: "black",
                     }}
-                  />
-                </Flex>
-                <Button
-                  onClick={handleFlip}
-                  className="flip"
-                  style={{
-                    color: "black",
-                  }}
-                >
-                  FLIP
-                </Button>
-              </>
-            )}
-          </Flex>
-        </Layout>
+                  >
+                    FLIP
+                  </Button>
+                </>
+              )}
+            </Flex>
+          </Layout>
+        ) : (
+          <></>
+        )}
       </Flex>
     </>
   );
