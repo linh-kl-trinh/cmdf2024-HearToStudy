@@ -76,7 +76,10 @@ const Main: React.FC<MainProps> = ({ setText }) => {
             rows={numRows}
             placeholder="Click microphone to start live transcription..."
             value={transcription}
-            onChange={(e) => setTranscription(e.target.value)}
+            onChange={(e) => {
+              setTranscription(e.target.value);
+              setText(transcription);
+            }}
           />
           <ButtonOverlay onClick={toggleListening} />
         </Flex>

@@ -72,6 +72,7 @@ const Home = () => {
               <Main setText={setText} />
               <Button
                 onClick={() => {
+                  console.log(text);
                   sendText();
                   setIsSummary(true);
                 }}
