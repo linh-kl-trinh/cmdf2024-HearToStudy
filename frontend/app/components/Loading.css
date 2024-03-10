@@ -1,12 +1,48 @@
 .ant-layout.css-dev-only-do-not-override-1uweeqc {
   padding: 0 !important;
 }
-/* 
+
 :where(.css-dev-only-do-not-override-1uweeqc).ant-layout,
 :where(.css-dev-only-do-not-override-1uweeqc).ant-layout * {
-  background-color: transparent !important; */
-/* } */
+  background-color: transparent !important;
+}
 
 .loading {
-  background-color: #FEFCE6 !important;
+  background-color: #fefce6 !important;
+}
+
+.custom-button {
+  background-color: #06d6a0 !important;
+  color: black;
+}
+
+.ant-card-body {
+  background-color: white !important;
+}
+
+:where(.css-dev-only-do-not-override-1uweeqc).ant-card .ant-card-body {
+  border-radius: 8px;
+}
+
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tabs-card.ant-tabs-top
+  > .ant-tabs-nav
+  .ant-tabs-tab,
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tabs-card.ant-tabs-top
+  > div
+  > .ant-tabs-nav
+  .ant-tabs-tab {
+  background-color: white !important;
+}
+
+.flex.flex-col.shadow-md.bg-white.align-middle.text-center.z-20 {
+  background-color: white !important;
+  justify-content: center;
+}
+
+button.ant-btn.css-dev-only-do-not-override-1uweeqc.ant-btn-circle.ant-btn-default.ant-btn-icon-only.circle-button {
+  background-color: #06d6a0 !important;
+}
+
+.flip {
+  background-color: #f8b7c5 !important;
 }

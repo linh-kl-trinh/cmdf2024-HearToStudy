@@ -63,7 +63,7 @@ const Home = () => {
         <Flex gap="large" vertical>
           {isSummary ? (
             isLoading ? (
-              <Loading />
+              <Loading isSummary={true} />
             ) : (
               <Summary />
             )
@@ -75,10 +75,10 @@ const Home = () => {
                   sendText();
                   setIsSummary(true);
                 }}
+                className="custom-button text-black"
                 type="primary"
-                style={{ backgroundColor: "#06D6A0", color: "black" }}
               >
-                NEXT
+                GENERATE SUMMARY
               </Button>
             </>
           )}

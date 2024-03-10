@@ -1,19 +1,27 @@
 "use client";
 import React from "react";
-import { Flex, Card } from "antd";
+import { Flex, Card, Typography } from "antd";
 import "./Loading.css";
-import { Typography } from "antd";
 const { Title } = Typography;
 
-const Loading = () => {
+const Loading: React.FC<{ isSummary?: boolean }> = ({ isSummary }) => {
   return (
     <Flex gap="large" vertical>
       <Title
-        style={{ fontWeight: "bold", color: "#06D6A0", fontSize: "40px", textAlign: "center" }}
+        style={{
+          fontWeight: "bold",
+          color: "#06D6A0",
+          fontSize: "40px",
+          textAlign: "center",
+        }}
       >
-        Summary
+        {isSummary ? "Summary" : "Flashcards"}
       </Title>
-      <Card bordered={false} bodyStyle={{ padding: "0" }}>
+      <Card
+        bordered={false}
+        bodyStyle={{ padding: "0" }}
+        className="loading-card"
+      >
         <div className="loading">
           <img
             src="/soot_loop.gif"

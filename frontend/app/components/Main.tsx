@@ -53,13 +53,15 @@ const Main: React.FC<MainProps> = ({ setText }) => {
     setText(e.target.value);
   };
 
+  const numRows = 20;
+
   const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Text",
       children: (
         <TextArea
-          rows={12}
+          rows={numRows}
           placeholder="Paste text here..."
           onChange={onTextChange}
         />
@@ -71,7 +73,7 @@ const Main: React.FC<MainProps> = ({ setText }) => {
       children: (
         <Flex vertical>
           <TextArea
-            rows={12}
+            rows={numRows}
             placeholder="Click microphone to start live transcription..."
             value={transcription}
             onChange={(e) => setTranscription(e.target.value)}

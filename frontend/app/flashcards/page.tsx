@@ -9,7 +9,8 @@ import Loading from "../components/Loading";
 const Flashcard = () => {
   const [flip, setFlip] = useState(false);
   const [currCard, setCurrCard] = useState(1);
-  const [cards, setCards] = useState({});
+  const [frontCards, setFrontCards] = useState<string[]>([]);
+  const [backCards, setBackCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   let cardCount = 10;
 
@@ -20,9 +21,10 @@ const Flashcard = () => {
         if (response.ok) {
           // Handle success
           const data = await response.json();
+          const jsonData = JSON.parse(data.flashcards);
+          parseFrontCards(jsonData);
+          parseBackCards(jsonData);
           setIsLoading(false);
-          const cards = data.flashcards;
-          setCards(parseCards(cards));
         } else {
           // Handle error
           const errorData = await response.json();
@@ -40,22 +42,29 @@ const Flashcard = () => {
     front: string;
     back: string;
   }
-  
-  const parseCards = (str: string): { [key: string]: string } => {
-    try {
-        const jsonArray: Flashcard[] = JSON.parse(str);
-        const dict: { [key: string]: string } = {};
 
-        jsonArray.forEach((card: Flashcard) => {
-            dict[card.front] = card.back;
-        });
-       
-        return dict;
+  const parseFrontCards = (jsonData: Flashcard[]) => {
+    try {
+      const newFrontCards = jsonData.map((card) => card.front);
+      setFrontCards((prevFrontCards) => [...prevFrontCards, ...newFrontCards]);
     } catch (error) {
-        console.error("Error parsing string:", error);
-        return {}; // Return an empty object if parsing fails
+      console.error("Error parsing string:", error);
     }
   };
+
+  const parseBackCards = (jsonData: Flashcard[]) => {
+    try {
+      const newBackCards = jsonData.map((card) => card.back);
+      setBackCards((prevBackCards) => [...prevBackCards, ...newBackCards]);
+    } catch (error) {
+      console.error("Error parsing string:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(frontCards);
+    console.log(backCards);
+  }, [frontCards, backCards]);
 
   const layoutStyle = {
     borderRadius: 8,
@@ -80,8 +89,8 @@ const Flashcard = () => {
   };
 
   const handlePrevCard = () => {
-    if (currCard == 1) {
-      setCurrCard(cardCount);
+    if (currCard == 0) {
+      setCurrCard(cardCount - 1);
     } else {
       setCurrCard(currCard - 1);
     }
@@ -89,7 +98,7 @@ const Flashcard = () => {
 
   const handleNextCard = () => {
     if (currCard == cardCount) {
-      setCurrCard(1);
+      setCurrCard(0);
     } else {
       setCurrCard(currCard + 1);
     }
@@ -110,47 +119,53 @@ const Flashcard = () => {
         />
         <Layout style={layoutStyle}>
           <Flex vertical align="center" justify="center">
-          {isLoading ? (
+            {isLoading ? (
               <Loading />
             ) : (
-            <>
-            <ReactCardFlip isFlipped={flip} flipDirection="vertical">
-                    <div
-                      style={boxStyle}
-                      className="flex flex-col shadow-md bg-white align-middle text-center z-20"
-                    >
-                      Welcome to GFG.
-                    </div>
-                    <div
-                      style={boxStyle}
-                      className="flex flex-col shadow-md bg-white align-middle text-center z-20"
-                    >
-                      Computer Science Portal.
-                    </div>
-                  </ReactCardFlip>
-                  <Flex gap="small" style={{ marginBottom: "10px" }}>
-                      <Button
-                        type="primary"
-                        shape="circle"
-                        icon={<ArrowLeftOutlined />}
-                        onClick={handlePrevCard}
-                        style={{ backgroundColor: "#06D6A0", color: "black" }} />
-                      <Button
-                        type="primary"
-                        shape="circle"
-                        icon={<ArrowRightOutlined />}
-                        onClick={handleNextCard}
-                        style={{ backgroundColor: "#06D6A0", color: "black" }} />
-                    </Flex>
-                    <Button
-                      type="primary"
-                      onClick={handleFlip}
-                      style={{ backgroundColor: "#F8B7C5", color: "black" }}
-                    >
-                      FLIP
-                    </Button>
-                    </>
-          )}
+              <>
+                <ReactCardFlip isFlipped={flip} flipDirection="vertical">
+                  <div
+                    style={boxStyle}
+                    className="flex flex-col shadow-md bg-white align-middle text-center z-20 text-lg"
+                  >
+                    {frontCards[currCard]}
+                  </div>
+                  <div
+                    style={boxStyle}
+                    className="flex flex-col shadow-md bg-white align-middle text-center z-20 text-lg"
+                  >
+                    {backCards[currCard]}
+                  </div>
+                </ReactCardFlip>
+                <Flex gap="small" style={{ marginBottom: "10px" }}>
+                  <Button
+                    shape="circle"
+                    icon={<ArrowLeftOutlined />}
+                    onClick={handlePrevCard}
+                    className="circle-button"
+                    style={{ color: "black" }}
+                  />
+                  <Button
+                    shape="circle"
+                    icon={<ArrowRightOutlined />}
+                    onClick={handleNextCard}
+                    className="circle-button"
+                    style={{
+                      color: "black",
+                    }}
+                  />
+                </Flex>
+                <Button
+                  onClick={handleFlip}
+                  className="flip"
+                  style={{
+                    color: "black",
+                  }}
+                >
+                  FLIP
+                </Button>
+              </>
+            )}
           </Flex>
         </Layout>
       </Flex>

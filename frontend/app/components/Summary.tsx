@@ -33,17 +33,25 @@ const Summary = () => {
   return (
     <Flex gap="large" vertical>
       <Title
-        style={{ fontWeight: "bold", color: "#06D6A0", fontSize: "40px", textAlign: "center" }}
+        style={{
+          fontWeight: "bold",
+          color: "#06D6A0",
+          fontSize: "40px",
+          textAlign: "center",
+        }}
       >
         Summary
       </Title>
-      <Card bordered={false} className="custom">{formattedLines}</Card>
+      <Card bordered={false} className="textbox">
+        {formattedLines}
+      </Card>
       <Button
         href="/counter"
         type="primary"
+        className="custom-button"
         style={{ backgroundColor: "#06D6A0", color: "black" }}
       >
-        QUIZ ME!
+        GENERATE FLASHCARDS
       </Button>
     </Flex>
   );

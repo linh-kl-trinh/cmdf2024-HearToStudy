@@ -1,11 +1,9 @@
-/* :where(.css-dev-only-do-not-override-1uweeqc).ant-layout {
-  background-color: transparent !important;
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tabs
+  .ant-tabs-content-holder {
+  background-color: white !important;
+  border-radius: 6px;
 }
 
-:where(.css-dev-only-do-not-override-1uweeqc).ant-tabs-top >.ant-tabs-nav {
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tabs-top > .ant-tabs-nav {
   margin: 0 !important;
 }
-
-.custom {
-  background-color: #ffffff !important;
-} */

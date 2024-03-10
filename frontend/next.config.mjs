@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 export default {
-  images: {
-    domains: ["*"], // Allow loading images from any domain
+  compiler: {
+    styledComponents: true,
   },
 };

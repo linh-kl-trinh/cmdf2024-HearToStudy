@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/styled-components": "^5.1.34",
     "antd": "^5.15.1",
     "next": "14.1.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@types/node": "^20",
