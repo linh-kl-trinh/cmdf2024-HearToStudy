@@ -6,30 +6,30 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/')
-def index():
-    text="Judging:\n\
-    The Redbrick team will receive all the DevPost submissions and review them for the\
-    accessibility analysis conducted. The submissions will be shortlisted down to ~8 projects, and\
-    then the Redbrick judges will go around and receive presentations and ask questions to help\
-    them make their final decision.\n\
-    Prize:\n\
-    Each member will receive a prize pack with a $150 gift card to Patagonia, Redbrick branded\
-    Lululemon belt bag ($75 value), Redbrick swag and other goodies. PLUS a guaranteed coffee\
-    chat with our head of recruitment!\n\
-    Qualification Criteria:\n\
-    Your submission/presentation must consider accessibility and inclusive design principles. You\
-    must provide an accessibility analysis with your submission, an explanation of your use of\
-    inclusive design principles, and be able to demonstrate how your project adheres to these\
-    principles.\n\
-    Ideas and Resources:\n\
-    We don’t always think about the accessibility and inclusion of the software that we build. Below\
-    are some tools to learn more about inclusive design principles, accessibility, and tools to\
-    analyze your project’s accessibility\n"
-    save_to_json('original.json', {'content': text})
-    generate_notes(text)
-    generate_quiz(10)
-    return 'Hello, World!'
+# @app.route('/')
+# def index():
+#     text="Judging:\n\
+#     The Redbrick team will receive all the DevPost submissions and review them for the\
+#     accessibility analysis conducted. The submissions will be shortlisted down to ~8 projects, and\
+#     then the Redbrick judges will go around and receive presentations and ask questions to help\
+#     them make their final decision.\n\
+#     Prize:\n\
+#     Each member will receive a prize pack with a $150 gift card to Patagonia, Redbrick branded\
+#     Lululemon belt bag ($75 value), Redbrick swag and other goodies. PLUS a guaranteed coffee\
+#     chat with our head of recruitment!\n\
+#     Qualification Criteria:\n\
+#     Your submission/presentation must consider accessibility and inclusive design principles. You\
+#     must provide an accessibility analysis with your submission, an explanation of your use of\
+#     inclusive design principles, and be able to demonstrate how your project adheres to these\
+#     principles.\n\
+#     Ideas and Resources:\n\
+#     We don’t always think about the accessibility and inclusion of the software that we build. Below\
+#     are some tools to learn more about inclusive design principles, accessibility, and tools to\
+#     analyze your project’s accessibility\n"
+#     save_to_json('original.json', {'content': text})
+#     generate_notes(text)
+#     generate_quiz(10)
+#     return 'Hello, World!'
 
 def save_to_json(file_path, data):
     try:
@@ -69,16 +69,13 @@ def generate_notes(text):
 
     save_to_json('summary.json', {'content': response.summary})
 
-    return jsonify({
-        'summary': response.summary
-    })
+    return response.summary
     
 @app.route('/sendText', methods=['POST'])
 def send_text():
     try:
-        data = request.get_json()
-        text = data.get('text')
-
+        text = request.get_json()
+        
         return jsonify({
             'notes': generate_notes(text)
         })
@@ -127,4 +124,4 @@ def generate_quiz(number_of_questions):
 
 # Run the Flask application
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True)
