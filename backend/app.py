@@ -100,17 +100,18 @@ def generate_quiz():
                     is the concept and the backside as the value. Make sure the frontside only \
                             contains the concept.")
         
-        print(response.text)
+        # print(response.text)
 
         flashcards = response.text
 
         # Find the index of '['
         start_index = flashcards.find('[')
+        end_index = flashcards.find(']')
 
         if start_index != -1:
             # Extract everything from '[' onwards
-            result = flashcards[start_index:]
-            print(result)
+            result = flashcards[start_index:end_index+1]
+            # print(result)
         else:
             return None
 
