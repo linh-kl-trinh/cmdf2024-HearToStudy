@@ -1,9 +1,50 @@
 "use client";
-import React, { useState } from "react";
-import { Flex, Layout } from "antd";
+import React, { CSSProperties, useState, useEffect } from "react";
+import Image from "next/image";
+import { Flex, Layout, Button } from "antd";
+import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import ReactCardFlip from "react-card-flip";
 
-const Summary = () => {
+const Flashcard = () => {
+  const [flip, setFlip] = useState(false);
+  const [currCard, setCurrCard] = useState(1);
+  const [cards, setCards] = useState({});
+  let cardCount = 10;
+
+  useEffect(() => {
+    getCards();
+  });
+
+  const getCards = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/getQuiz");
+      if (response.ok) {
+        // Handle success
+        const data = await response.json();
+        const cards = data.flashcards;
+        setCards(parseCards(cards));
+      } else {
+        // Handle error
+        const errorData = await response.json();
+        console.error("Error:", errorData);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const parseCards = (cards: { front: string; back: any }[]) => {
+    const dict: { [key: string]: any } = {};
+
+    cards.forEach((card: any) => {
+      if (!(card.front in dict)) {
+        dict[card.front] = card.back;
+      }
+    });
+    console.log(dict);
+    return dict;
+  };
+
   const layoutStyle = {
     borderRadius: 8,
     overflow: "hidden",
@@ -14,81 +55,91 @@ const Summary = () => {
     marginTop: "calc(10%)",
   };
 
-  const [flip, setFlip] = useState(false);
+  const boxStyle: CSSProperties = {
+    width: "400px",
+    height: "300px",
+    margin: "20px",
+    borderRadius: "8px",
+    padding: "20px",
+  };
 
   const handleFlip = () => {
     setFlip(!flip);
   };
 
+  const handlePrevCard = () => {
+    if (currCard == 1) {
+      setCurrCard(cardCount);
+    } else {
+      setCurrCard(currCard - 1);
+    }
+  };
+
+  const handleNextCard = () => {
+    if (currCard == cardCount) {
+      setCurrCard(1);
+    } else {
+      setCurrCard(currCard + 1);
+    }
+  };
+
   return (
-    <Flex gap="middle" wrap="wrap" justify="center">
-      <Layout style={layoutStyle}>
-        <Flex align="center" justify="center">
-          <ReactCardFlip isFlipped={flip} flipDirection="vertical">
-            <div
-              style={{
-                width: "300px",
-                height: "200px",
-                background: "#d7fbda",
-                fontSize: "40px",
-                color: "green",
-                margin: "20px",
-                borderRadius: "4px",
-                textAlign: "center",
-                padding: "20px",
-              }}
-            >
-              Welcome to GFG.
-              <br />
-              <br />
-              <button
-                style={{
-                  width: "150px",
-                  padding: "10px",
-                  fontSize: "20px",
-                  background: "#f5d9fa",
-                  fontWeight: "bold",
-                  borderRadius: "5px",
-                }}
-                onClick={() => setFlip(!flip)}
+    <>
+      <Flex gap="middle" wrap="wrap" justify="center">
+        <Image
+          src="/corner.png"
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+            zIndex: -1,
+          }}
+          alt="background"
+        />
+        <Layout style={layoutStyle}>
+          <Flex vertical align="center" justify="center">
+            <ReactCardFlip isFlipped={flip} flipDirection="vertical">
+              <div
+                style={boxStyle}
+                className="flex flex-col shadow-md bg-white align-middle text-center z-20"
               >
-                Flip
-              </button>
-            </div>
-            <div
-              style={{
-                width: "300px",
-                height: "200px",
-                background: "#fbd7f8",
-                fontSize: "40px",
-                color: "blue",
-                margin: "20px",
-                borderRadius: "4px",
-                textAlign: "center",
-                padding: "20px",
-              }}
-            >
-              Computer Science Portal.
-              <br />
-              <button
-                style={{
-                  width: "150px",
-                  padding: "10px",
-                  fontSize: "20px",
-                  background: "#f5d9fa",
-                  fontWeight: "bold",
-                  borderRadius: "5px",
-                }}
-                onClick={() => setFlip(!flip)}
+                Welcome to GFG.
+              </div>
+              <div
+                style={boxStyle}
+                className="flex flex-col shadow-md bg-white align-middle text-center z-20"
               >
-                Flip
-              </button>
-            </div>
-          </ReactCardFlip>
-        </Flex>
-      </Layout>
-    </Flex>
+                Computer Science Portal.
+              </div>
+            </ReactCardFlip>
+            <Flex gap="small" style={{ marginBottom: "10px" }}>
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<ArrowLeftOutlined />}
+                onClick={handlePrevCard}
+                style={{ backgroundColor: "#06D6A0", color: "black" }}
+              />
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<ArrowRightOutlined />}
+                onClick={handleNextCard}
+                style={{ backgroundColor: "#06D6A0", color: "black" }}
+              />
+            </Flex>
+            <Button
+              type="primary"
+              onClick={handleFlip}
+              style={{ backgroundColor: "#F8B7C5", color: "black" }}
+            >
+              FLIP
+            </Button>
+          </Flex>
+        </Layout>
+      </Flex>
+    </>
   );
 };
 
-export default Summary;
+export default Flashcard;

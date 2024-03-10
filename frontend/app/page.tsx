@@ -43,7 +43,7 @@ const Home = () => {
     maxWidth: "calc(50% - 8px)",
     padding: 15,
     backgroundColor: "#FEFCE6",
-    marginTop: "calc(10%)",
+    marginTop: "calc(8%)",
   };
 
   return (
@@ -75,7 +75,8 @@ const Home = () => {
                   sendText();
                   setIsSummary(true);
                 }}
-                style={{ backgroundColor: "#06D6A0" }}
+                type="primary"
+                style={{ backgroundColor: "#06D6A0", color: "black" }}
               >
                 NEXT
               </Button>

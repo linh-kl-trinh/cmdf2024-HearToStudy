@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@ant-design/icons": "^5.3.1",
     "react-card-flip": "^1.2.2"
   }
 }

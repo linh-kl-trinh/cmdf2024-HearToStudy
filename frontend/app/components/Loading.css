@@ -1,0 +1,8 @@
+.ant-layout.css-dev-only-do-not-override-1uweeqc {
+  padding: 0 !important;
+}
+
+:where(.css-dev-only-do-not-override-1uweeqc).ant-layout,
+:where(.css-dev-only-do-not-override-1uweeqc).ant-layout * {
+  background-color: transparent !important;
+}

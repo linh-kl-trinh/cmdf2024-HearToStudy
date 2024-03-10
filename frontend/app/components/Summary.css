@@ -1,0 +1,4 @@
+:where(.css-dev-only-do-not-override-1uweeqc).ant-layout,
+:where(.css-dev-only-do-not-override-1uweeqc).ant-layout * {
+  background-color: transparent !important;
+}

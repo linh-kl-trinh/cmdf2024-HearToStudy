@@ -1,8 +1,7 @@
 import React from "react";
-import { Flex, Layout, Card, Button, Input, Avatar, Typography } from "antd";
-import Image from "next/image";
+import { Flex, Card, Button, Input, Avatar } from "antd";
 import { useState, useEffect } from "react";
-
+import { Typography } from "antd";
 const { Title } = Typography;
 
 const Summary = () => {
@@ -22,24 +21,6 @@ const Summary = () => {
     fetchContent();
   }, []);
 
-  const getQuiz = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:5000/getQuiz");
-      if (response.ok) {
-        // Handle success
-        const data = await response.json();
-        const flashcards = data.flashcards;
-        console.log("Success:", flashcards);
-      } else {
-        // Handle error
-        const errorData = await response.json();
-        console.error("Error:", errorData);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const formattedLines = content.split("\n").map((line, index) => (
     <React.Fragment key={index}>
       {line}
@@ -50,8 +31,18 @@ const Summary = () => {
 
   return (
     <Flex gap="large" vertical>
+      <Title
+        align="center"
+        style={{ fontWeight: "bold", color: "#06D6A0", fontSize: "40px" }}
+      >
+        Summary
+      </Title>
       <Card bordered={false}>{formattedLines}</Card>
-      <Button onClick={getQuiz} style={{ backgroundColor: "#06D6A0" }}>
+      <Button
+        href="/counter"
+        type="primary"
+        style={{ backgroundColor: "#06D6A0", color: "black" }}
+      >
         QUIZ ME!
       </Button>
     </Flex>

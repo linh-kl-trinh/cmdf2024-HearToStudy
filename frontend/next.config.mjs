@@ -2,12 +2,6 @@
 
 export default {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "giphy.com",
-        port: "",
-      },
-    ],
+    domains: ["*"], // Allow loading images from any domain
   },
 };

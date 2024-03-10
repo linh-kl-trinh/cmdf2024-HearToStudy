@@ -58,6 +58,7 @@ def read_from_json(file_path, key):
 
 def generate_notes(text):
     print(text)
+    # save_to_json('original.json', {'content': text})
     co = cohere.Client()
     
     response = co.summarize(
@@ -85,14 +86,15 @@ def send_text():
         return {'error': 'Failed to process the text'}, 500
     
 @app.route('/getQuiz', methods=['GET'])
-def generate_quiz(number_of_questions):
+def generate_quiz():
     try:
         co = cohere.Client()
         response = co.chat(
             chat_history=[
-                {"role": "USER", "message": read_from_json('original.json', 'content')},
+                # {"role": "USER", "message": read_from_json('original.json', 'content')},
+                {"role": "USER", "message": read_from_json('summary.json', 'content')},
             ],
-            message=f"Make {number_of_questions} flashcards of key concepts \
+            message=f"Make 10 flashcards of key concepts \
                 and their corresponding key ideas/definitions for the text above. \
                     Format as a json array of objects with 2 fields: 'front' and 'back', the value of 'front' \
                     is the concept and the backside as the value. Make sure the frontside only \
